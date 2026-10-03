@@ -1,0 +1,72 @@
+Make me a personal daily routine plan for the Cadence app: my day timeline, workouts, meals and groceries.
+
+ABOUT ME (fill in what applies, delete the rest):
+- Age, height, weight:
+- Goal: (lose fat / build muscle / both / get fitter / sleep better)
+- Work days and hours: (e.g. Mon–Fri 09:00–17:30)
+- Second shift, if my hours change some weeks: (e.g. 14:00–22:00 every other week; leave empty if my hours are fixed)
+- Commute, each way:
+- Wake-up and bedtime I'd like:
+- Training: home or gym, equipment, experience, days per week, minutes per session
+- Food: diet (veg / vegan / non-veg / halal ...), allergies, cuisine, foods I like or avoid, budget
+- Anything else: (injuries, health limits, kids, classes ...)
+- Start date:
+
+Use my details to set sensible daily targets (protein, calories, water, sleep), a realistic daily timeline for work days and days off, a 7-day workout week that progresses, meals with protein and calories, a few food swaps, a weekly grocery list, prep tasks and 5–9 simple rules.
+
+REPLY FORMAT (important: the app imports your reply directly)
+Reply with ONLY one JSON object, no text before or after it and no comments inside it. Use exactly this structure; "..." means "more of the same":
+
+{
+  "targets": { "protein": [110, 130], "kcal": 2400, "water": 3, "sleep": 7.5 },
+  "workdays": ["Mon", "Tue", "Wed", "Thu", "Fri"],
+  "shifts": {
+    "A": {
+      "name": "Shift A", "color": "water",
+      "meals":    { "bfast": "08:00", "lunch": "13:00", "snack": "16:30", "dinner": "20:00" },
+      "blocks": [
+        { "id": "wake",  "s": "07:00", "e": "07:10", "dom": "water", "icon": "sunrise",  "title": "Wake + 500 ml water", "sub": "Lights on" },
+        { "id": "train", "s": "07:10", "e": "07:50", "dom": "train", "icon": "dumbbell", "title": "{workout}", "sub": "{exercises}", "wk": true },
+        { "id": "bfast", "s": "08:00", "e": "08:20", "dom": "fuel",  "icon": "utensils", "title": "Breakfast", "sub": "Oats + yogurt · 31 g protein" },
+        { "id": "work",  "s": "09:00", "e": "17:30", "dom": "work",  "icon": "briefcase", "title": "Work", "sub": "Lunch 13:00 · snack 16:30" },
+        { "id": "mprep", "s": "20:30", "e": "21:00", "dom": "prep",  "icon": "cooking-pot", "title": "Mini-prep", "sub": "Overnight oats", "days": ["Wed"] },
+        { "id": "sleep", "s": "23:00", "e": "07:00", "dom": "sleep", "icon": "bed", "title": "Sleep", "sub": "8 h window" },
+        ...
+      ],
+      "offMeals": { "bfast": "09:00", "lunch": "13:30", "snack": "16:30", "dinner": "20:00" },
+      "offDay": [ ...the timeline for days off, same block format... ]
+    },
+    "B": { ...same as "A" for my second shift, with "name": "Shift B" and "color": "sleep". If my hours are fixed, make "B" an exact copy of "A"... }
+  },
+  "week": [
+    { "day": "Mon", "name": "Upper body", "dom": "train", "icon": "dumbbell", "ex": [
+      { "name": "Push-ups", "spec": "4 × 8–12", "sets": 4, "tip": "All sets at 12 → elevate your feet" },
+      ...
+    ] },
+    ...7 entries in total, Mon to Sun...
+  ],
+  "meals": [
+    { "id": "bfast", "name": "Breakfast", "icon": "egg", "items": [["Oats 60 g + milk", 13, 330], ["Greek yogurt 200 g", 18, 150]] },
+    ...
+  ],
+  "swaps": { "Oats 60 g + milk": [["Eggs ×3 on toast", 22, 380], ["Muesli + milk", 12, 350]] },
+  "grocery": [ { "cat": "Protein", "icon": "egg", "items": [["Eggs", "18"], ["Greek yogurt", "1.5 kg"]] }, ... ],
+  "prep": [ { "day": "Sun", "title": "Meal prep · 1 h", "items": ["Cook rice for 3 lunches", "Overnight oats for 3 days"] } ],
+  "rules": ["Hit your protein every day.", ...],
+  "minimumKeep": ["wake", "bfast", "work", "dinner", "sleep"],
+  "equipment": ["Resistance band", ...],
+  "phases": [ { "name": "Phase 1 · Foundation", "icon": "house", "from": "2026-10-05", "to": "2026-11-29", "note": "8 weeks" } ]
+}
+
+Rules for the JSON:
+- Times are 24-hour "HH:MM". A block may cross midnight (sleep 23:00 → 07:00). Each timeline covers the whole day in time order, without overlaps.
+- Every block has id (short, lowercase), s (start), e (end), dom, icon, title and sub (one short line). Add "days": ["Sat"] for a block that happens only on some days; two blocks may share an id only when their "days" differ.
+- Each timeline ("blocks" and "offDay") has one workout block with "wk": true, "title": "{workout}" and "sub": "{exercises}"; the app fills in that day's workout.
+- A meal block uses the same id as its meal in "meals" (e.g. "bfast"). Every meal id needs a time in both "meals" and "offMeals" of both shifts.
+- Use dom "work" for the work block, "commute" for travel and "sleep" for sleep.
+- dom is one of: sleep, train, water, fuel, prep, mind, work, commute.
+- icon is one of: activity, alarm-clock, apple, backpack, bed, bell, brain, briefcase, calendar, car, carrot, chef-hat, clock, coffee, cooking-pot, droplet, dumbbell, egg, flame, footprints, heart-pulse, house, lightbulb, list-checks, milk, moon, notebook-pen, nut, ruler, salad, scale, shopping-basket, shower-head, smile, soup, sun, sunrise, target, timer, trophy, utensils, wheat, zap.
+- "week" has exactly 7 entries (Mon to Sun). Every day has at least one exercise; on a rest day use { "name": "Full rest", "spec": "No training", "sets": 1 }. "sets" is a whole number from 1 to 12; "spec" looks like "3 × 10", "3 × 10 / leg", "3 × 30 s" or "20 min".
+- Foods are ["name with portion", protein_g, kcal] with realistic numbers; one day's meals should add up to the targets.
+- "workdays" are the days I work; every other day uses "offDay".
+- Grocery amounts cover one week; "minimumKeep" lists the block ids to keep on a low-energy day.
