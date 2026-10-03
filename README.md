@@ -3,7 +3,7 @@
 **Your day, workouts and meals in one simple app.**
 It's free, works offline, and everything stays on your phone.
 
-👉 **Open the app: https://sreekar-24.github.io/cadence/**
+👉 **Open the app: https://p-sandeep42.github.io/cadence/**
 
 ![Cadence: Today, Train, Eat and Plan screens](screens/0-preview.png)
 
@@ -44,7 +44,7 @@ The app starts with a sample plan. To get one built for your own hours, goal and
 
 You see every change before anything is saved, and the previous plan stays in history.
 
-**Without the app open?** The prompt is here: **https://sreekar-24.github.io/cadence/prompt.txt**
+**Without the app open?** The prompt is here: **https://p-sandeep42.github.io/cadence/prompt.txt**
 Fill in the "About me" part and paste it into ChatGPT. Save the reply as a `.json` file, then in the app use Settings → **Import a plan file**.
 
 ### What to tell ChatGPT
